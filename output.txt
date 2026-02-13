@@ -1,0 +1,31 @@
+-----------------LOGIN------------------
+
+$ curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"ratrashubham129@email.com","password":"password123"}'
+
+{"message":"OTP sent","loginSessionId":"mchos7"}
+
+SERVER LOG--> [OTP] Session mchos7 generated 846907
+
+----------------VERIFY OTP------------------
+
+$ curl -c cookies.txt -X POST http://localhost:3000/auth/verify-otp \
+  -H "Content-Type: application/json" \
+  -d '{"loginSessionId":"mchos7","otp":"846907"}'
+
+{"message":"OTP verified","sessionId":"mchos7"}
+
+------------------GET TOKEN------------------
+
+$ curl -b cookies.txt -X POST http://localhost:3000/auth/token
+{"access_token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdHJhc2h1YmhhbTEyOUBlbWFpbC5jb20iLCJzZXNzaW9uSWQiOiJtY2hvczciLCJpYXQiOjE3NzA5NzA2MTksImV4cCI6MTc3MDk3MTUxOX0.oOH50CfYd0d045F0jwgCn2by7Lsl8lPeEri7nePieIA",
+"expires_in":900}
+
+----------------PROTECTED ROUTE--------------
+
+$ curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhdHJhc2h1YmhhbTEyOUBlbWFpbC5jb20iLCJzZXNzaW9uSWQiOiJtY2hvczciLCJpYXQiOjE3NzA5NzA2MTksImV4cCI6MTc3MDk3MTUxOX0.oOH50CfYd0d045F0jwgCn2by7Lsl8lPeEri7nePieIA" http://localhost:3000/protected
+
+{"message":"Access granted",
+"user":{"email":"ratrashubham129@email.com","sessionId":"mchos7","iat":1770970619,"exp":1770971519},
+"success_flag":"FLAG-cmF0cmFzaHViaGFtMTI5QGVtYWlsLmNvbV9DT01QTEVURURfQVNTSUdOTUVOVA=="}
